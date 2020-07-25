@@ -51,10 +51,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
     printerManager.scanResults.listen((devices) async {
       print('UI: Devices found ${devices.length}');
-      setState(() {
-        _devices = devices;
-      });
+      if (devices.length > 0)
+        setState(() {
+          _devices = devices;
+        });
     });
+  }
+
+  void _stopScanDevices(){
+    printerManager.stopScan();
   }
 
   Ticket testTicket() {
@@ -105,11 +110,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Column(children: <Widget>[
           FlatButton(
-              onPressed: () {
-                print("scan");
-                _startScanDevices();
-              },
-              child: Text("Scan")),
+            onPressed: () {
+              print("scan");
+              _startScanDevices();
+            },
+            child: Text("Scan"),
+          ),
+          FlatButton(
+            onPressed: () {
+              print("stop scan");
+              _stopScanDevices();
+            },
+            child: Text("Stop Scan"),
+          ),
           Container(
             height: 600,
             child: ListView.builder(
